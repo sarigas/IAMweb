@@ -59,35 +59,42 @@
 							<th>UID</th>
 							<th>Display Name</th>
 							<th>Email</th>
+							<th>Login</th>
 						</tr>
 					</thead>
 					<tbody>
-					   <%
-					   if (idList == null || idList.isEmpty()){%>
-						  <tr>
-						      <td colspan="4">No result</td>
-						  </tr>
-						   
-					   <% } else{
-					   for (Identity id : idList){ %>
+						<%
+							if(idList==null||idList.isEmpty())
+							{
+							} 
+							else 
+							{ 
+								for(Identity identity: idList){
+						%>
 						<tr>
-							<td><%=id.getUid() %></td>
-							<td><%=id.getDisplayName() %></td>
-							<td><%=id.getEmail()%></td><div>
-							<a class="btn btn-success"
-							     href="Update?id=<%=id.getUid()%>">Update</a> 
-								 <a	href="welcome.jsp" id=<%=id.getUid()%>"
-										class="btn btn-success" onclick="return confirm('Warning!!!To delete, please click ok ?');"> Delete</a>
+			
+							<td><%=identity.getUid()%></td>
+							<td><%=identity.getDisplayName()%></td>
+							<td><%=identity.getEmail()%></td>
+							<td><%=identity.getUsername()%></td>
+					    	<td><div>
+					    	<a class="btn btn-success"
+							     href="Update?id=<%=identity.getId()%>">Update</a> 
+							 <a	href="Delete?id=<%=identity.getId()%>"
+										class="btn btn-success" onclick="return confirm('To delete click ok ?');"> Delete</a>
 								</div></td>
 						</tr>
-                        <%} 
-                        }%>
-
+						<%}}
+						%>
 					</tbody>
 				</table>
 			</div>
 			
 		</form>
+		
+		<!-- <form class="form-horizontal" role="form" method="GET" action="Update">
+			<button type="submit" class="btn btn-primary">Update</button>
+		</form> -->
 	</div>
 </body>
 </html>
