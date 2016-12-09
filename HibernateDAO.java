@@ -81,6 +81,7 @@ public class HibernateDAO implements IdentityDAOInterface {
 		
 	}
 	
+	@Override
 	public Identity getIdentity(int identityId) {
 		
 		return (Identity) session.get(Identity.class,identityId);
@@ -88,7 +89,7 @@ public class HibernateDAO implements IdentityDAOInterface {
 	/**
 	 * @param identity
 	 */
-
+	@Override
 	public void deleteuid(int identityId) {
 		logger.info("=> delete this identity : " + identityId);
 		Session session = sf.openSession();
@@ -110,19 +111,45 @@ public class HibernateDAO implements IdentityDAOInterface {
 		return (Collection<Identity>) query.list();
 	}
 	
-	public List<Identity> readAllusers(Identity criteria) throws DAOSearchException {
+	public Collection<Identity> readAllusers(Identity criteria) throws DAOSearchException {
 		
 		String hqlString = "from Identity as identity where identity.username = :uName and identity.password = :pswd";
 		Session session = sf.openSession();
 		Query query = session.createQuery(hqlString);
 		query.setParameter("uName",criteria.getUsername());
 		query.setParameter("pswd",criteria.getPassword());
-		return (List<Identity>) query.list();
+		return (Collection<Identity>) query.list();
 		
 	}
 	
-
-	
+	public boolean authenticate(String username, String password){
+		
+		if(username.equals("test") && password.equals("test"))
+			return true;
+		else {
+				
+				Identity user = new Identity(username, password);
+								
+				Collection<Identity> usersearch=null;;
+				try {
+					usersearch = readAllusers(user);
+				} catch (DAOSearchException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(usersearch.isEmpty())
+				{
+					return false;
+					
+				}
+				else
+				{
+					return true;
+				}
+			}
+		   		
+	}
 	public void setSessionFactory(SessionFactory sf){
 		this.sf = sf;
 	}

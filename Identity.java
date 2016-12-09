@@ -25,6 +25,8 @@ public class Identity {
 	@Column(name ="INDEX")
 	long id;
 	
+	
+
 	private String displayName;
 	private String email;
 	private String uid;
@@ -57,7 +59,13 @@ public class Identity {
 		this.password=password;
 	}
 	
-	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 	/**
 	 * @return the displayName
 	 */
