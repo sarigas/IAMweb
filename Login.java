@@ -2,6 +2,7 @@ package fr.tbr.iam.web.servlets;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,11 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import fr.tbr.iam.log.IAMLogger;
 import fr.tbr.iam.log.impl.IAMLogManager;
+import fr.tbr.iamcore.exception.DAOSearchException;
 import fr.tbr.iamcore.service.authentication.AuthenticationService;
+import fr.tbr.iamcore.service.dao.IdentityDAOInterface;
 
 /**
  * Servlet implementation class Login
  */
+
 
 @WebServlet(name="Login", urlPatterns="/Login")
 public class Login extends GenericSpringServlet {
@@ -25,6 +29,9 @@ public class Login extends GenericSpringServlet {
     /**
      * Default constructor. 
      */
+	
+	@Inject
+	IdentityDAOInterface dao;
     public Login() {
     }
 
@@ -44,8 +51,7 @@ public class Login extends GenericSpringServlet {
 		logger.debug(login);
 		logger.debug(password);
 		
-		AuthenticationService auth = new AuthenticationService();
-		if (auth.authenticate(login, password)){
+		if (dao.authenticate(login, password)){
 			response.sendRedirect("welcome.jsp");
 		}else{
 			response.sendRedirect("reconnect.jsp");
